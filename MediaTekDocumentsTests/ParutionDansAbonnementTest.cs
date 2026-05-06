@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaTekDocuments.view;
 
 namespace MediaTekDocumentsTests
-{
+{    //test unitaire de la méthode ParutionDansAbonnement de FrmMediatek
     [TestClass]
     public class ParutionDansAbonnementTest
     {
