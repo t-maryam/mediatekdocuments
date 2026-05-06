@@ -20,14 +20,16 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgGenres = new BindingSource();
         private readonly BindingSource bdgPublics = new BindingSource();
         private readonly BindingSource bdgRayons = new BindingSource();
+        private readonly Utilisateur utilisateurConnecte;
 
         /// <summary>
         /// Constructeur : création du contrôleur lié à ce formulaire
         /// </summary>
-        internal FrmMediatek()
+        internal FrmMediatek(Utilisateur utilisateur)
         {
             InitializeComponent();
             this.controller = new FrmMediatekController();
+            this.utilisateurConnecte = utilisateur;
             this.Load += FrmMediatek_Load;
         }
 
@@ -1253,7 +1255,8 @@ namespace MediaTekDocuments.view
         private void TabCommandesLivres_Enter(object sender, EventArgs e)
         {
             RemplirComboCategorie(controller.GetAllSuivis(), bdgCmdLivresSuivis, cbxCmdLivresSuivi);
-            cbxCmdLivresSuivi.SelectedIndex = 0;
+            if (cbxCmdLivresSuivi.Items.Count > 0)
+                cbxCmdLivresSuivi.SelectedIndex = 0;
             RafraichirCmdLivresListe();
             grpCmdLivresCommande.Enabled = false;
         }
@@ -1528,7 +1531,8 @@ namespace MediaTekDocuments.view
         private void TabCommandesDvd_Enter(object sender, EventArgs e)
         {
             RemplirComboCategorie(controller.GetAllSuivis(), bdgCmdDvdSuivis, cbxCmdDvdSuivi);
-            cbxCmdDvdSuivi.SelectedIndex = 0;
+            if (cbxCmdDvdSuivi.Items.Count > 0)
+                cbxCmdDvdSuivi.SelectedIndex = 0;
             RafraichirCmdDvdListe();
             grpCmdDvdCommande.Enabled = false;
         }
@@ -2017,18 +2021,37 @@ namespace MediaTekDocuments.view
         /// </summary>
         private void FrmMediatek_Load(object sender, EventArgs e)
         {
-            List<Abonnement> abonnementsExpirant = controller.GetAbonnementsExpirantBientot();
-            if (abonnementsExpirant.Count > 0)
+            AdapterInterfaceSelonService();
+            if (utilisateurConnecte.idService.Equals("00001") || utilisateurConnecte.idService.Equals("00004"))
             {
-                List<Revue> toutesRevues = controller.GetAllRevues();
-                string message = "Abonnements se terminant dans moins de 30 jours :\n\n";
-                foreach (Abonnement abo in abonnementsExpirant)
+                List<Abonnement> abonnementsExpirant = controller.GetAbonnementsExpirantBientot();
+                if (abonnementsExpirant.Count > 0)
                 {
-                    Revue revue = toutesRevues.Find(r => r.Id.Equals(abo.idRevue));
-                    string titre = revue != null ? revue.Titre : abo.idRevue;
-                    message += "- " + titre + " (fin : " + abo.dateFinAbonnement.ToShortDateString() + ")\n";
+                    List<Revue> toutesRevues = controller.GetAllRevues();
+                    string message = "Abonnements se terminant dans moins de 30 jours :\n\n";
+                    foreach (Abonnement abo in abonnementsExpirant)
+                    {
+                        Revue revue = toutesRevues.Find(r => r.Id.Equals(abo.idRevue));
+                        string titre = revue != null ? revue.Titre : abo.idRevue;
+                        message += "- " + titre + " (fin : " + abo.dateFinAbonnement.ToShortDateString() + ")\n";
+                    }
+                    MessageBox.Show(message, "Alerte abonnements");
                 }
-                MessageBox.Show(message, "Alerte abonnements");
+            }
+        }
+
+        /// <summary>
+        /// Adapte l'interface selon le service de l'utilisateur connecté
+        /// </summary>
+        private void AdapterInterfaceSelonService()
+        {
+            // Service Prêts : pas d'accès aux commandes ni à la réception
+            if (utilisateurConnecte.idService.Equals("00002"))
+            {
+                tabOngletsApplication.TabPages.Remove(tabCommandesLivres);
+                tabOngletsApplication.TabPages.Remove(tabCommandesDvd);
+                tabOngletsApplication.TabPages.Remove(tabAbonnementsRevues);
+                tabOngletsApplication.TabPages.Remove(tabReceptionRevue);
             }
         }
 
@@ -2058,6 +2081,11 @@ namespace MediaTekDocuments.view
         }
 
         private void tabCommandesDVD_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabAbonnementsRevues_Click(object sender, EventArgs e)
         {
 
         }

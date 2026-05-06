@@ -183,5 +183,13 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAbonnementsExpirantBientot();
         }
+
+        /// <summary>
+        /// Vérifie l'authentification d'un utilisateur
+        /// </summary>
+        public Utilisateur GetUtilisateur(string login, string pwd)
+        {
+            return access.GetUtilisateur(login, pwd);
+        }
     }
 }

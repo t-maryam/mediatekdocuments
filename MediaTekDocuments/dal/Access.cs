@@ -7,6 +7,8 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MediaTekDocuments.dal
 {
@@ -408,6 +410,43 @@ namespace MediaTekDocuments.dal
             return tous.Where(a => a.dateFinAbonnement >= DateTime.Now && a.dateFinAbonnement <= limite)
                        .OrderBy(a => a.dateFinAbonnement)
                        .ToList();
+        }
+        /// <summary>
+        /// Vérifie l'authentification d'un utilisateur
+        /// </summary>
+        /// <param name="login">login saisi</param>
+        /// <param name="pwd">mot de passe saisi (en clair, sera haché)</param>
+        /// <returns>l'utilisateur trouvé, ou null si authentification échouée</returns>
+        public Utilisateur GetUtilisateur(string login, string pwd)
+        {
+            string pwdHashed = HashSha256(pwd);
+            Dictionary<string, string> champs = new Dictionary<string, string>
+            {
+                { "login", login },
+                { "pwd", pwdHashed }
+            };
+            string jsonChamps = JsonConvert.SerializeObject(champs);
+            List<Utilisateur> utilisateurs = TraitementRecup<Utilisateur>(GET, "utilisateur/" + jsonChamps, null);
+            if (utilisateurs != null && utilisateurs.Count > 0)
+            {
+                return utilisateurs[0];
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Hache une chaîne en SHA256
+        /// </summary>
+        private string HashSha256(string input)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
+                    sb.Append(b.ToString("x2"));
+                return sb.ToString();
+            }
         }
 
     }
