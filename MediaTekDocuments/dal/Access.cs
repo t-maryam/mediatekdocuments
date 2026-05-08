@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Serilog;
 
 namespace MediaTekDocuments.dal
 {
@@ -51,12 +52,20 @@ namespace MediaTekDocuments.dal
             String authenticationString;
             try
             {
-                authenticationString = "admin:adminpwd";
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.Console()
+                    .WriteTo.File("logs/log.txt")
+                    .CreateLogger();
+
+                string login = ConfigurationManager.AppSettings["apiLogin"];
+                string pwd = ConfigurationManager.AppSettings["apiPwd"];
+                authenticationString = login + ":" + pwd;
                 api = ApiRest.GetInstance(uriApi, authenticationString);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Log.Fatal("Access.Access erreur={0}", e.Message);
                 Environment.Exit(0);
             }
         }
@@ -162,7 +171,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.CreerExemplaire erreur={0}", ex.Message);
             }
             return false;
         }
@@ -196,12 +205,12 @@ namespace MediaTekDocuments.dal
                 }
                 else
                 {
-                    Console.WriteLine("code erreur = " + code + " message = " + (String)retour["message"]);
+                    Log.Error("Access.TraitementRecup code={0} message={1}", code, (String)retour["message"]);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erreur lors de l'accès à l'API : " + e.Message);
+                Log.Error("Access.TraitementRecup erreur={0}", e.Message);
                 if (methode.Equals(GET))
                 {
                     Environment.Exit(0);
@@ -289,7 +298,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.CreerCommandeLivre erreur={0}", ex.Message);
             }
             return false;
         }
@@ -309,7 +318,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.ModifierSuiviCommande erreur={0}", ex.Message);
             }
             return false;
         }
@@ -329,7 +338,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.SupprimerCommandeLivre erreur={0}", ex.Message);
             }
             return false;
         }
@@ -359,7 +368,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.CreerCommandeRevue erreur={0}", ex.Message);
             }
             return false;
         }
@@ -377,7 +386,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.RenouvelerAbonnement erreur={0}", ex.Message);
             }
             return false;
         }
@@ -395,7 +404,7 @@ namespace MediaTekDocuments.dal
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("Access.SupprimerCommandeRevue erreur={0}", ex.Message);
             }
             return false;
         }

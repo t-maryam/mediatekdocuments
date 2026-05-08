@@ -3,16 +3,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MediaTekDocuments.view;
 
 namespace MediaTekDocumentsTests
-{    //test unitaire de la méthode ParutionDansAbonnement de FrmMediatek
+{
     [TestClass]
     public class ParutionDansAbonnementTest
     {
         [TestMethod]
         public void ParutionEntreLesDeuxDates_RetourneVrai()
         {
-            DateTime dateCommande = new DateTime(2025, 1, 1);
-            DateTime dateFinAbonnement = new DateTime(2025, 12, 31);
-            DateTime dateParution = new DateTime(2025, 6, 15);
+            DateTime dateCommande = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateFinAbonnement = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateParution = new DateTime(2025, 6, 15, 0, 0, 0, DateTimeKind.Local);
 
             bool resultat = FrmMediatek.ParutionDansAbonnement(dateCommande, dateFinAbonnement, dateParution);
 
@@ -22,9 +22,9 @@ namespace MediaTekDocumentsTests
         [TestMethod]
         public void ParutionAvantDateCommande_RetourneFaux()
         {
-            DateTime dateCommande = new DateTime(2025, 1, 1);
-            DateTime dateFinAbonnement = new DateTime(2025, 12, 31);
-            DateTime dateParution = new DateTime(2024, 12, 31);
+            DateTime dateCommande = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateFinAbonnement = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateParution = new DateTime(2024, 12, 31, 0, 0, 0, DateTimeKind.Local);
 
             bool resultat = FrmMediatek.ParutionDansAbonnement(dateCommande, dateFinAbonnement, dateParution);
 
@@ -34,9 +34,9 @@ namespace MediaTekDocumentsTests
         [TestMethod]
         public void ParutionApresDateFinAbonnement_RetourneFaux()
         {
-            DateTime dateCommande = new DateTime(2025, 1, 1);
-            DateTime dateFinAbonnement = new DateTime(2025, 12, 31);
-            DateTime dateParution = new DateTime(2026, 1, 1);
+            DateTime dateCommande = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateFinAbonnement = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateParution = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Local);
 
             bool resultat = FrmMediatek.ParutionDansAbonnement(dateCommande, dateFinAbonnement, dateParution);
 
@@ -46,9 +46,9 @@ namespace MediaTekDocumentsTests
         [TestMethod]
         public void ParutionEgaleDateCommande_RetourneVrai()
         {
-            DateTime dateCommande = new DateTime(2025, 1, 1);
-            DateTime dateFinAbonnement = new DateTime(2025, 12, 31);
-            DateTime dateParution = new DateTime(2025, 1, 1);
+            DateTime dateCommande = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateFinAbonnement = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateParution = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
 
             bool resultat = FrmMediatek.ParutionDansAbonnement(dateCommande, dateFinAbonnement, dateParution);
 
@@ -58,9 +58,9 @@ namespace MediaTekDocumentsTests
         [TestMethod]
         public void ParutionEgaleDateFinAbonnement_RetourneVrai()
         {
-            DateTime dateCommande = new DateTime(2025, 1, 1);
-            DateTime dateFinAbonnement = new DateTime(2025, 12, 31);
-            DateTime dateParution = new DateTime(2025, 12, 31);
+            DateTime dateCommande = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateFinAbonnement = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateParution = new DateTime(2025, 12, 31, 0, 0, 0, DateTimeKind.Local);
 
             bool resultat = FrmMediatek.ParutionDansAbonnement(dateCommande, dateFinAbonnement, dateParution);
 
