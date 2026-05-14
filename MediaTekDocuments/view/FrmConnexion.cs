@@ -18,15 +18,28 @@ namespace MediaTekDocuments.view
     /// </summary>
     public partial class FrmConnexion : Form
     {
+        /// <summary>
+        /// Contrôleur d'accès aux données
+        /// </summary>
         private readonly FrmMediatekController controller;
+
+        /// <summary>
+        /// Utilisateur authentifié, transmis à la fenêtre principale
+        /// </summary>
         public Utilisateur UtilisateurConnecte { get; private set; }
 
+        /// <summary>
+        /// Constructeur : initialise le formulaire et le contrôleur
+        /// </summary>
         public FrmConnexion()
         {
             InitializeComponent();
             controller = new FrmMediatekController();
         }
 
+        /// <summary>
+        /// Clic sur le bouton "Se connecter" : vérifie l'authentification et redirige selon le service
+        /// </summary>
         private void btnConnexion_Click(object sender, EventArgs e)
         {
             if (txbLogin.Text.Equals("") || txbPwd.Text.Equals(""))

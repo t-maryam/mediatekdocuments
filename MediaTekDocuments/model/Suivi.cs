@@ -11,6 +11,9 @@ namespace MediaTekDocuments.model
     /// </summary>
     public class Suivi : Categorie
     {
+        /// <summary>
+        /// Constructeur
+        /// </summary>
         public Suivi(string id, string libelle) : base(id, libelle)
         {
         }

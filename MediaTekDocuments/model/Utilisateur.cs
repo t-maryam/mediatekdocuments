@@ -11,13 +11,23 @@ namespace MediaTekDocuments.model
     /// </summary>
     public class Utilisateur
     {
+        /// <summary>Identifiant de l'utilisateur</summary>
         public string id { get; set; }
+        /// <summary>Login de connexion</summary>
         public string login { get; set; }
+        /// <summary>Identifiant du service d'affectation</summary>
         public string idService { get; set; }
+        /// <summary>Libellé du service d'affectation</summary>
         public string service { get; set; }
 
+        /// <summary>
+        /// Constructeur par défaut (nécessaire à la désérialisation JSON)
+        /// </summary>
         public Utilisateur() { }
 
+        /// <summary>
+        /// Constructeur
+        /// </summary>
         public Utilisateur(string id, string login, string idService, string service)
         {
             this.id = id;

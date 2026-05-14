@@ -144,6 +144,7 @@ namespace MediaTekDocuments.controller
         {
             return access.SupprimerCommandeLivre(id);
         }
+
         /// <summary>
         /// Retourne les commandes (abonnements) d'une revue
         /// </summary>
@@ -153,16 +154,20 @@ namespace MediaTekDocuments.controller
         }
 
         /// <summary>
-        /// Crée une commande de revue
+        /// Crée une commande de revue (abonnement)
         /// </summary>
+        /// <param name="abonnement">L'objet Abonnement concerné</param>
+        /// <returns>True si la création a pu se faire</returns>
         public bool CreerCommandeRevue(Abonnement abonnement)
         {
             return access.CreerCommandeRevue(abonnement);
         }
 
         /// <summary>
-        /// Renouvelle un abonnement
+        /// Renouvelle un abonnement (modifie la date de fin)
         /// </summary>
+        /// <param name="abonnement">L'objet Abonnement concerné</param>
+        /// <returns>True si le renouvellement a pu se faire</returns>
         public bool RenouvelerAbonnement(Abonnement abonnement)
         {
             return access.RenouvelerAbonnement(abonnement);
@@ -171,14 +176,17 @@ namespace MediaTekDocuments.controller
         /// <summary>
         /// Supprime une commande de revue
         /// </summary>
+        /// <param name="id">id de la commande à supprimer</param>
+        /// <returns>True si la suppression a pu se faire</returns>
         public bool SupprimerCommandeRevue(string id)
         {
             return access.SupprimerCommandeRevue(id);
         }
 
         /// <summary>
-        /// Retourne les abonnements expirant bientôt
+        /// Retourne les abonnements se terminant dans moins de 30 jours
         /// </summary>
+        /// <returns>Liste d'objets Abonnement</returns>
         public List<Abonnement> GetAbonnementsExpirantBientot()
         {
             return access.GetAbonnementsExpirantBientot();
@@ -187,6 +195,9 @@ namespace MediaTekDocuments.controller
         /// <summary>
         /// Vérifie l'authentification d'un utilisateur
         /// </summary>
+        /// <param name="login">login saisi</param>
+        /// <param name="pwd">mot de passe saisi (en clair)</param>
+        /// <returns>L'utilisateur authentifié, ou null si échec</returns>
         public Utilisateur GetUtilisateur(string login, string pwd)
         {
             return access.GetUtilisateur(login, pwd);
