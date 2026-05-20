@@ -1,4 +1,4 @@
-# MediatekDocuments – Atelier 2
+# Application C# MediatekDocuments – Atelier 2
 
 > Ce dépôt présente les fonctionnalités **ajoutées** dans le cadre de l'Atelier 2.
 > Pour la présentation de l'application d'origine et de ses fonctionnalités initiales, consulter le dépôt d'origine :
